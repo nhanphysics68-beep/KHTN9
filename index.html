@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Điểm Giữa Kì I - KHTN 9 | Trường THCS & THPT Hòa Thuận</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+            }
+            .print-shadow-none {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-100 via-indigo-50/60 to-sky-50 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- HEADER TRƯỜNG -->
+    <header class="w-full bg-white/95 backdrop-blur-md shadow-sm border-b border-indigo-100 sticky top-0 z-40 no-print">
+        <div class="max-w-5xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 text-white flex items-center justify-center shadow-md shadow-indigo-200 flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">TRƯỜNG THCS & THPT HÒA THUẬN • TỔ KHTN</p>
+                    <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">CỔNG TRA CỨU ĐIỂM GIỮA KÌ I - KHTN 9 (VẬT LÍ – SINH HỌC)</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold">
+                    Năm học: 2026 – 2027
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-4xl w-full mx-auto px-4 py-6 sm:py-10 flex-grow">
+
+        <!-- MÀN HÌNH 1: ĐĂNG NHẬP TRA CỨU ĐIỂM -->
+        <section id="login-section" class="max-w-xl mx-auto fade-in">
+            <div class="bg-white rounded-3xl shadow-xl shadow-indigo-100/60 border border-slate-200/80 overflow-hidden">
+                
+                <!-- Banner đầu form -->
+                <div class="bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 px-6 py-6 text-white text-center relative">
+                    <div class="w-14 h-14 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-3 border border-white/25 shadow-inner">
+                        <svg class="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-black tracking-tight">TRA CỨU KẾT QUẢ BÀI KIỂM TRA</h2>
+                    <p class="text-indigo-100 text-xs sm:text-sm mt-1 font-medium">
+                        Chọn tên học sinh và nhập mật khẩu là ngày tháng năm sinh để xem điểm & nhận xét chi tiết
+                    </p>
+                </div>
+
+                <!-- Form nhập liệu -->
+                <form id="lookup-form" onsubmit="handleLogin(event)" class="p-6 sm:p-8 space-y-5">
+
+                    <!-- Bước 1: Chọn Lớp -->
+                    <div>
+                        <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-2">
+                            1. Chọn Lớp học:
+                        </label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="setClassFilter('9A2')" id="tab-class-9A2"
+                                class="py-2.5 px-3 rounded-2xl font-bold text-xs sm:text-sm border-2 transition-all bg-indigo-600 text-white border-indigo-600 shadow-sm">
+                                Lớp 9A2 (46 HS)
+                                <span class="block text-[10px] font-normal opacity-90">Đã có điểm</span>
+                            </button>
+                            <button type="button" onclick="setClassFilter('9A1')" id="tab-class-9A1"
+                                class="py-2.5 px-3 rounded-2xl font-bold text-xs sm:text-sm border-2 transition-all bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100">
+                                Lớp 9A1 (49 HS)
+                                <span class="block text-[10px] font-normal text-slate-500">Chờ cập nhật</span>
+                            </button>
+                            <button type="button" onclick="setClassFilter('ALL')" id="tab-class-ALL"
+                                class="py-2.5 px-3 rounded-2xl font-bold text-xs sm:text-sm border-2 transition-all bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100">
+                                Tất cả Khối 9
+                                <span class="block text-[10px] font-normal text-slate-500">95 học sinh</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bước 2: Tìm nhanh hoặc Chọn Tài khoản (Tên học sinh) -->
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <label for="student-select" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                                2. Tài khoản (Chọn tên học sinh): <span class="text-rose-500">*</span>
+                            </label>
+                            <span id="student-count-badge" class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full">
+                                46 học sinh
+                            </span>
+                        </div>
+
+                        <!-- Ô gõ tìm nhanh tên học sinh -->
+                        <div class="relative">
+                            <input type="text" id="quick-search-input" oninput="filterStudentDropdown()"
+                                placeholder="🔍 Gõ tên hoặc STT để lọc nhanh (không bắt buộc)..."
+                                class="w-full pl-9 pr-9 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <button type="button" id="clear-search-btn" onclick="clearSearchFilter()" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Dropdown danh sách có sẵn tên học sinh -->
+                        <div class="relative">
+                            <select id="student-select" required onchange="onStudentSelected()"
+                                class="w-full px-4 py-3.5 rounded-2xl border-2 border-slate-300 bg-white font-bold text-slate-900 text-base focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200 transition cursor-pointer">
+                                <!-- Render bằng JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Bước 3: Nhập Mật khẩu (Ngày tháng năm sinh) -->
+                    <div class="space-y-2.5">
+                        <label for="dob-password" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                            3. Mật khẩu (Ngày tháng năm sinh): <span class="text-rose-500">*</span>
+                        </label>
+
+                        <div class="relative">
+                            <input type="password" id="dob-password" required
+                                placeholder="VD: 16/08/2012 hoặc 16082012"
+                                autocomplete="off"
+                                class="w-full pl-4 pr-24 py-3.5 rounded-2xl border-2 border-slate-300 font-bold text-lg text-slate-900 tracking-wider focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200 transition">
+                            <button type="button" onclick="togglePasswordVisibility()" id="toggle-pwd-btn"
+                                class="absolute right-2.5 top-2.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1">
+                                <span id="toggle-pwd-text">Hiện</span>
+                            </button>
+                        </div>
+
+                        <!-- HỘP GỢI Ý CHO HỌC SINH NHẬP MẬT KHẨU -->
+                        <div class="bg-amber-50/90 border-2 border-amber-200/80 rounded-2xl p-4 space-y-2 text-xs sm:text-sm text-amber-950">
+                            <div class="flex items-start space-x-2">
+                                <span class="text-base leading-none mt-0.5">💡</span>
+                                <div class="space-y-1 flex-grow">
+                                    <p class="font-bold text-amber-900">Hướng dẫn nhập mật khẩu cho học sinh:</p>
+                                    <p class="text-amber-800 leading-relaxed">
+                                        Nhập <strong>Ngày/Tháng/Năm sinh</strong> có dấu gạch chéo (ví dụ: <code class="bg-white px-1.5 py-0.5 rounded border border-amber-300 font-bold text-indigo-700">16/08/2012</code>) hoặc <strong>viết liền 8 chữ số</strong> không cần dấu gạch chéo (ví dụ: <code class="bg-white px-1.5 py-0.5 rounded border border-amber-300 font-bold text-indigo-700">16082012</code>).
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Gợi ý động theo tên học sinh đang chọn -->
+                            <div id="dynamic-student-hint" class="hidden pt-2 border-t border-amber-200/80 flex flex-wrap items-center justify-between gap-2">
+                                <div id="hint-text-content" class="text-xs font-semibold text-indigo-900 bg-indigo-50/90 px-3 py-1.5 rounded-xl border border-indigo-200 flex-grow">
+                                    <!-- Nội dung gợi ý động -->
+                                </div>
+                                <button type="button" id="more-hint-btn" onclick="revealDayHint()"
+                                    class="text-xs font-bold text-amber-800 hover:text-amber-950 underline px-2 py-1">
+                                    Xem thêm gợi ý ngày sinh?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông báo lỗi nếu nhập sai -->
+                    <div id="login-error-box" class="hidden p-4 rounded-2xl bg-rose-50 border-2 border-rose-200 text-rose-800 text-sm font-semibold flex items-start space-x-2.5 fade-in">
+                        <svg class="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div id="login-error-message">Mật khẩu ngày sinh chưa đúng.</div>
+                    </div>
+
+                    <!-- Nút Đăng nhập Tra cứu -->
+                    <button type="submit"
+                        class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 active:scale-[0.99] text-white font-black text-base sm:text-lg rounded-2xl shadow-lg shadow-indigo-200 transition flex items-center justify-center space-x-2">
+                        <span>🔍 TRA CỨU ĐIỂM NGAY</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- MÀN HÌNH 2: PHIẾU KẾT QUẢ ĐIỂM CÁ NHÂN -->
+        <section id="result-section" class="hidden space-y-6 fade-in">
+
+            <!-- Thanh điều hướng phía trên phiếu điểm -->
+            <div class="flex flex-wrap items-center justify-between gap-3 no-print">
+                <button type="button" onclick="logoutStudent()"
+                    class="px-4 py-2.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 border-2 border-slate-200 font-bold text-sm shadow-sm transition flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    <span>Tra cứu học sinh khác</span>
+                </button>
+
+                <button type="button" onclick="window.print()"
+                    class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm transition flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                    </svg>
+                    <span>In phiếu điểm</span>
+                </button>
+            </div>
+
+            <!-- KHUNG PHIẾU ĐIỂM CHÍNH -->
+            <div id="score-card-container" class="bg-white rounded-3xl shadow-xl border-2 border-slate-200 overflow-hidden print-shadow-none">
+                <!-- Nội dung được render tự động bằng JavaScript -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full bg-white border-t border-slate-200 py-5 px-4 text-center text-xs text-slate-500 mt-10 no-print">
+        <p class="font-bold text-slate-700">TRƯỜNG THCS & THPT HÒA THUẬN • TỔ KHOA HỌC TỰ NHIÊN</p>
+        <p class="mt-0.5">Hệ thống Tra cứu Điểm Kiểm tra Giữa kì I - Môn KHTN 9 (Vật lí – Sinh học) • Năm học 2026 – 2027</p>
+    </footer>
+
+    <!-- JAVASCRIPT DỮ LIỆU & XỬ LÝ TRA CỨU -->
+    <script>
+        // 1. DỮ LIỆU CHÍNH XÁC 46 HỌC SINH LỚP 9A2 (KÈM ĐIỂM & NHẬN XÉT CHI TIẾT)
+        const students9A2 = [
+            { stt: 1, hsId: 50, name: "Phạm Thị Loan Anh", dob: "16/08/2012", className: "9A2", examCode: "Đề 3", pages: "57–60", tnCorrect: 14, tnScore: 3.5, c1: 1.0, c2: 1.0, c3: 0.0, c4: 0.75, tlScore: 2.75, total: 6.25, rounded: 6.3, note: "", comment: "Câu 1 (1,0/1,5đ): a) Không làm (0đ); b) Tính đúng Wt = 120 J và W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (0,0/1,5đ): Không làm câu 3a và 3b. | Câu 4 (0,75/1,0đ): Viết đúng P: Aa x aa (0,25đ), GP: A,a ; a (0,25đ), đời con (0,25đ); ghi thiếu chữ 'a' ở 1Aa và chỉ ghi tỉ lệ kiểu hình. => Làm tốt các bài toán tính thế năng, cơ năng, công và công suất; cần ôn kỹ phần tái bản DNA và trình bày sơ đồ lai." },
+            { stt: 2, hsId: 51, name: "Phan Văn Bình", dob: "18/04/2011", className: "9A2", examCode: "Đề 2", pages: "25–28", tnCorrect: 15, tnScore: 3.75, c1: 0.5, c2: 1.0, c3: 0.0, c4: 0.25, tlScore: 1.75, total: 5.5, rounded: 5.5, note: "", comment: "Câu 1 (0,5/1,5đ): a) Lấy được ví dụ máy bay đang bay trên cao (0,25đ), thiếu nêu định nghĩa; b) Đúng công thức Wt = P.h nhưng nhân sai 20.5 = 250 (0,25đ). | Câu 2 (1,0/1,0đ): Tính đúng A = 600 J (0,5đ) và P = 60 (0,5đ, lưu ý đơn vị công suất là W chứ không phải J). | Câu 3 (0,0/1,5đ): Chỉ chép lại câu hỏi, chưa làm được nội dung câu 3a và 3b. | Câu 4 (0,25/1,0đ): Viết đúng phép lai P: Aa x aa (0,25đ), thiếu giao tử và giải sai đời con (ghi nhầm 100% Aa rồi lai F2). => Cần tính toán cẩn thận hơn (20 x 5 = 100), chú ý đơn vị công suất (W) và ôn lại phần Sinh học." },
+            { stt: 3, hsId: 52, name: "Nguyễn Quốc Dương", dob: "26/10/2012", className: "9A2", examCode: "Đề 4", pages: "173–176", tnCorrect: 18, tnScore: 4.5, c1: 1.25, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 4.75, total: 9.25, rounded: 9.3, note: "", comment: "Câu 1 (1,25/1,5đ): a) Định nghĩa chưa chính xác (0đ), lấy ví dụ đúng máy bay đang bay trên bầu trời (0,25đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bán bảo toàn và bổ sung (0,75đ); b) Tính đúng 4.2² = 16 phân tử DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích P: Aa x aa, giao tử và tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Bài làm rất tốt (9,25/10đ), trình bày rõ ràng, mạch lạc; cần nắm chính xác hơn định nghĩa thế năng trọng trường ở câu 1a." },
+            { stt: 4, hsId: 53, name: "Nguyễn Ngọc Hân", dob: "27/02/2012", className: "9A2", examCode: "Đề 2", pages: "181–184", tnCorrect: 11, tnScore: 2.75, c1: 1.25, c2: 1.0, c3: 0.0, c4: 0.0, tlScore: 2.25, total: 5.0, rounded: 5.0, note: "", comment: "Câu 1 (1,25/1,5đ): a) Nêu đúng khi vật di chuyển và lấy ví dụ đúng máy bay đang bay (0,5đ); b) Đúng Wt = 100 J (0,5đ), đúng công thức W = Wđ + Wt (0,25đ) nhưng thay nhầm số 2 + 0 = 2 J. | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (0,0/1,5đ): Bỏ trống không làm câu 3. | Câu 4 (0,0/1,0đ): Không làm câu 4. => Phần tự luận Vật lí hiểu bài (chú ý câu 1b thay Wt = 100 J vào W = Wđ + Wt = 100 J); cần ôn tập kỹ phần tự luận Sinh học." },
+            { stt: 5, hsId: 54, name: "Nguyễn Thái Học", dob: "07/04/2012", className: "9A2", examCode: "Đề 3", pages: "9–12", tnCorrect: 16, tnScore: 4.0, c1: 0.0, c2: 0.0, c3: 0.0, c4: 0.0, tlScore: 0.0, total: 4.0, rounded: 4.0, note: "", comment: "Câu 1 (0,0/1,5đ): Bỏ trống không làm bài. | Câu 2 (0,0/1,0đ): Bỏ trống không làm bài. | Câu 3 (0,0/1,5đ): Bỏ trống không làm bài. | Câu 4 (0,0/1,0đ): Bỏ trống không làm bài. => Phần trắc nghiệm làm khá (4,0/5,0đ) nhưng bỏ giấy trắng toàn bộ phần tự luận. Cần ôn tập kỹ kiến thức tự luận!" },
+            { stt: 6, hsId: 55, name: "Lê Thị Thuý Huỳnh", dob: "02/12/2012", className: "9A2", examCode: "Đề 2", pages: "113–116", tnCorrect: 14, tnScore: 3.5, c1: 0.0, c2: 0.0, c3: 0.0, c4: 0.25, tlScore: 0.25, total: 3.75, rounded: 3.8, note: "", comment: "Câu 1 (0,0/1,5đ): Không làm bài. | Câu 2 (0,0/1,0đ): Không làm bài. | Câu 3 (0,0/1,5đ): Chỉ chép lại đề câu 3a rồi bỏ trống, không làm câu 3b. | Câu 4 (0,25/1,0đ): Viết đúng phép lai Aa x aa (0,25đ); thiếu giao tử và giải sai F1, F2. => Phần trắc nghiệm đạt 3,5/5,0đ nhưng phần tự luận hầu như bỏ trống. Cần cố gắng ôn tập kỹ các dạng bài tự luận!" },
+            { stt: 7, hsId: 56, name: "Nguyễn Kha", dob: "25/03/2012", className: "9A2", examCode: "Đề 2", pages: "81–84", tnCorrect: 12, tnScore: 3.0, c1: 0.5, c2: 1.0, c3: 0.0, c4: 0.0, tlScore: 1.5, total: 4.5, rounded: 4.5, note: "", comment: "Câu 1 (0,5/1,5đ): a) Đúng ý khi vật chuyển động (0,25đ), ví dụ thiếu thế năng; b) Đúng công thức Wt = P.h (0,25đ) nhưng chép nhầm số liệu chậu cây Đề 3/4. | Câu 2 (1,0/1,0đ): Tính đúng A = 600 (0,5đ, lưu ý ký hiệu lực kéo là F và ghi đơn vị J) và công suất P = 60 W (0,5đ). | Câu 3 (0,0/1,5đ): Không làm bài. | Câu 4 (0,0/1,0đ): Không làm bài. => Cần tự làm bài theo đúng số liệu Đề 2 của mình (quả dừa P=20N, h=5m) và ôn tập thêm phần Sinh học." },
+            { stt: 8, hsId: 57, name: "Cao Hoàng Khá", dob: "29/07/2012", className: "9A2", examCode: "Đề 1", pages: "33–36", tnCorrect: 11, tnScore: 2.75, c1: 1.25, c2: 1.0, c3: 0.75, c4: 1.0, tlScore: 4.0, total: 6.75, rounded: 6.8, note: "", comment: "Câu 1 (1,25/1,5đ): a) Lấy đúng ví dụ quả bóng nảy từ trên cao xuống (0,25đ), thiếu định nghĩa; b) Tính đúng Wt = 100 J và W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (0,75/1,5đ): Chưa nêu được đặc điểm cấu tạo phân biệt DNA và RNA (0đ); tính đúng số phân tử DNA con 2.2³ = 16 (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai P: Aa x aa, giao tử và xác định đúng tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Phần tự luận làm khá tốt (4,0/5,0đ); cần ôn thêm phần trắc nghiệm và đặc điểm cấu tạo của DNA, RNA." },
+            { stt: 9, hsId: 58, name: "Lê Trọng Khang", dob: "16/01/2012", className: "9A2", examCode: "Đề 1", pages: "105–108", tnCorrect: 13, tnScore: 3.25, c1: 0.75, c2: 0.5, c3: 0.0, c4: 0.0, tlScore: 1.25, total: 4.5, rounded: 4.5, note: "", comment: "Câu 1 (0,75/1,5đ): a) Lấy đúng ví dụ quả dừa rơi từ trên cây xuống (0,25đ), thiếu nêu khi nào vật có động năng; b) Tính đúng Wt = 100 J (0,5đ), thiếu cơ năng W. | Câu 2 (0,5/1,0đ): a) Tính đúng công A = 600 J (0,5đ); b) Viết P = A/t nhưng thay số sai 100.10 = 1000 J (0đ). | Câu 3 (0,0/1,5đ): Bỏ trống không làm bài. | Câu 4 (0,0/1,0đ): Không làm bài. => Cần đọc kỹ yêu cầu câu hỏi để làm đủ các ý (cơ năng W), thay đúng số A = 600 vào P = A/t và ôn tập phần Sinh học." },
+            { stt: 10, hsId: 59, name: "Phạm Diễm Khanh", dob: "27/04/2012", className: "9A2", examCode: "Đề 3", pages: "149–152", tnCorrect: 18, tnScore: 4.5, c1: 1.0, c2: 1.0, c3: 0.0, c4: 0.0, tlScore: 2.0, total: 6.5, rounded: 6.5, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nêu đúng điều kiện và ví dụ thả viên bi từ trên cao xuống (0,5đ); b) Đúng công thức Wt = mgh và W = Wđ + Wt (0,5đ), sai bước đổi 3kg = 3000g. | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (0,0/1,5đ): Bỏ trống không làm câu 3. | Câu 4 (0,0/1,0đ): Bỏ trống không làm câu 4. => Trắc nghiệm và phần Vật lí làm khá tốt (lưu ý trong công thức Wt = mgh thì m tính bằng kg, không đổi ra gam); cần ôn lại tự luận Sinh học." },
+            { stt: 11, hsId: 60, name: "Lâm Thị Ngọc Khánh", dob: "14/03/2012", className: "9A2", examCode: "Đề 2", pages: "125–128", tnCorrect: 19, tnScore: 4.75, c1: 1.25, c2: 1.0, c3: 1.15, c4: 0.25, tlScore: 3.65, total: 8.4, rounded: 8.4, note: "", comment: "Câu 1 (1,25/1,5đ): a) Nêu đúng vật có động năng khi di chuyển (0,25đ), thiếu lấy ví dụ (0đ); b) Tính đúng Wt = 100 J và W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,15/1,5đ): a) Nêu đúng sự khác nhau về đơn phân của DNA và RNA (0,4đ), thiếu nêu số mạch (2 mạch và 1 mạch); b) Đúng 2.2³ = 16 (0,75đ). | Câu 4 (0,25/1,0đ): Viết đúng P: Aa x aa (0,25đ); viết sai giao tử GP (Aa, aa) và kết quả F1 (100% Aa). => Trắc nghiệm làm rất tốt (19/20 câu); tự luận cần đọc kỹ để không bỏ sót ý ví dụ câu 1a và xem lại cách viết giao tử câu 4." },
+            { stt: 12, hsId: 61, name: "Nguyễn Trầm Minh Khôi", dob: "07/01/2012", className: "9A2", examCode: "Đề 2", pages: "5–8", tnCorrect: 18, tnScore: 4.5, c1: 1.25, c2: 1.0, c3: 1.15, c4: 0.5, tlScore: 3.9, total: 8.4, rounded: 8.4, note: "", comment: "Câu 1 (1,25/1,5đ): a) Nêu đúng khi vật chuyển động (0,25đ), ví dụ hòn bi lăn trên sàn thiếu thế năng (0đ); b) Tính đúng Wt = 100 J, W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,15/1,5đ): a) Nêu đúng các loại đơn phân của DNA và RNA (0,4đ), thiếu ý số mạch (2 mạch và 1 mạch); b) Đúng 2.2³ = 16 DNA con (0,75đ). | Câu 4 (0,5/1,0đ): Viết đúng P: Aa x aa (0,25đ) và GP: A,a ; a (0,25đ); sai kết quả Fa (ghi nhầm 100% Aa rồi lai F1 x F1). => Trắc nghiệm và phần tính toán Vật lí làm tốt; cần chú ý kết quả phép lai phân tích Aa x aa -> 1Aa : 1aa." },
+            { stt: 13, hsId: 62, name: "Trịnh Thiên Kiều", dob: "30/05/2012", className: "9A2", examCode: "Đề 1", pages: "153–156", tnCorrect: 9, tnScore: 2.25, c1: 0.25, c2: 0.5, c3: 0.0, c4: 0.0, tlScore: 0.75, total: 3.0, rounded: 3.0, note: "", comment: "Câu 1 (0,25/1,5đ): a) Nêu đúng vật có động năng khi chuyển động (0,25đ), ví dụ xe chạy đường bằng thiếu thế năng (0đ); b) Bỏ trống kết quả (0đ). | Câu 2 (0,5/1,0đ): a) Tính đúng công A = 600 J (0,5đ); b) Sai công thức và kết quả công suất P = A.t² (0đ). | Câu 3 (0,0/1,5đ): Bỏ trống không trả lời được ý a và ý b. | Câu 4 (0,0/1,0đ): Không làm bài. => Kiến thức còn hổng nhiều ở cả Lý và Sinh, cần ôn lại các công thức cơ bản và bài tập di truyền." },
+            { stt: 14, hsId: 63, name: "Võ Huỳnh Thiên Kim", dob: "20/12/2012", className: "9A2", examCode: "Đề 3", pages: "141–144", tnCorrect: 18, tnScore: 4.5, c1: 1.5, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 5.0, total: 9.5, rounded: 9.5, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng điều kiện có thế năng trọng trường và lấy ví dụ đúng (0,5đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bán bảo toàn và bổ sung (0,75đ); b) Tính đúng 4.2² = 16 phân tử DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích P: Aa x aa, giao tử và tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Bài làm rất tốt, trình bày sạch đẹp, chính xác toàn bộ phần tự luận!" },
+            { stt: 15, hsId: 64, name: "Phạm Gia Lạc", dob: "27/03/2012", className: "9A2", examCode: "Đề 3", pages: "77–80", tnCorrect: 10, tnScore: 2.5, c1: 1.0, c2: 1.0, c3: 0.0, c4: 0.0, tlScore: 2.0, total: 4.5, rounded: 4.5, note: "", comment: "Câu 1 (1,0/1,5đ): a) Thiếu định nghĩa, ví dụ viên gạch nằm yên không có động năng (0đ); b) Tính đúng Wt = 120 J và W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng A = 1000 J (0,5đ) và P = 100 (0,5đ, lưu ý đơn vị của công suất P là W chứ không phải J). | Câu 3 (0,0/1,5đ): Bỏ trống không làm bài. | Câu 4 (0,0/1,0đ): Không làm bài. => Làm được bài tập tính thế năng, cơ năng và công; cần ôn kỹ phần lý thuyết Vật lí và toàn bộ phần tự luận Sinh học." },
+            { stt: 16, hsId: 65, name: "Nguyễn Nhật Thanh Lam", dob: "22/06/2012", className: "9A2", examCode: "Đề 4", pages: "85–88", tnCorrect: 18, tnScore: 4.5, c1: 1.5, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 5.0, total: 9.5, rounded: 9.5, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng điều kiện có thế năng trọng trường và lấy ví dụ đúng (0,5đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bán bảo toàn và bổ sung (0,75đ); b) Tính đúng 4.2² = 16 phân tử DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích P: Aa x aa, giao tử và tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Bài làm rất tốt, trình bày rõ ràng, nắm vững kiến thức cả hai phân môn Lý và Sinh!" },
+            { stt: 17, hsId: 66, name: "Nguyễn Dương Kim Liên", dob: "31/01/2012", className: "9A2", examCode: "Đề 4", pages: "129–132", tnCorrect: 17, tnScore: 4.25, c1: 1.0, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 4.5, total: 8.75, rounded: 8.8, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nêu chưa đúng định nghĩa thế năng trọng trường và ví dụ chưa phù hợp (0đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bán bảo toàn và bổ sung (0,75đ); b) Tính đúng 4.2² = 16 phân tử DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích và tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Bài làm tốt (8,75/10đ); cần nắm chính xác hơn định nghĩa thế năng trọng trường (khi vật ở một độ cao so với mốc thế năng)." },
+            { stt: 18, hsId: 67, name: "Võ Nguyễn Phương Linh", dob: "31/07/2012", className: "9A2", examCode: "Đề 1", pages: "17–20", tnCorrect: 19, tnScore: 4.75, c1: 1.5, c2: 1.0, c3: 1.15, c4: 1.0, tlScore: 4.65, total: 9.4, rounded: 9.4, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng khi vật chuyển động và lấy ví dụ đúng quả mít rơi, quả cầu lông đang bay (0,5đ); b) Đúng Wt = 100 J, W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,15/1,5đ): a) Nêu đúng khác biệt đơn phân A-T-G-C và A-U-G-C (0,4đ), thiếu ý số mạch (DNA 2 mạch, RNA 1 mạch); b) Đúng 2.2³ = 16 (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai P: Aa x aa, giao tử và xác định đúng F1: 1Aa : 1aa (50% Aa : 50% aa) (1,0đ). => Bài làm rất tốt (9,15/10đ), trình bày cẩn thận, rõ ràng!" },
+            { stt: 19, hsId: 68, name: "Nguyễn Thành Long", dob: "11/12/2012", className: "9A2", examCode: "Đề 3", pages: "61–64", tnCorrect: 13, tnScore: 3.25, c1: 1.0, c2: 0.25, c3: 0.0, c4: 0.25, tlScore: 1.5, total: 4.75, rounded: 4.8, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nhầm sang định nghĩa động năng, ví dụ xe chạy trên đường thiếu thế năng (0đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (0,25/1,0đ): Viết đúng công thức A = F.s và P = A/t (0,25đ), nhưng thay nhầm số liệu của Đề 1/2 (F=100, s=6) vào bài Đề 3 (F=200, s=5). | Câu 3 (0,0/1,5đ): Không làm bài. | Câu 4 (0,25/1,0đ): Viết đúng phép lai P: Aa x aa (0,25đ); thiếu giao tử và ghi sai F1: 100%. => Cần đọc kỹ số liệu trong đề của mình (Đề 3) tránh nhầm sang đề khác, và ôn lại phần tự luận Sinh học." },
+            { stt: 20, hsId: 69, name: "Châu Thanh Mai", dob: "06/02/2012", className: "9A2", examCode: "Đề 1", pages: "165–168", tnCorrect: 16, tnScore: 4.0, c1: 1.25, c2: 1.0, c3: 0.0, c4: 0.5, tlScore: 2.75, total: 6.75, rounded: 6.8, note: "", comment: "Câu 1 (1,25/1,5đ): a) Chưa nêu đúng khi vật chuyển động, nhưng có ví dụ đúng máy bay đang bay (0,25đ); b) Tính đúng Wt = 100 J, W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (0,0/1,5đ): Ghi sai yêu cầu đề (Đề 1 hỏi phân biệt DNA và RNA) và bỏ trống. | Câu 4 (0,5/1,0đ): Viết đúng P: Aa x aa (0,25đ) và GP: A,a ; a (0,25đ); sai kết quả F1 (ghi 100% Aa rồi lai tiếp F1 x F1). => Làm tốt các bài tập tính toán Vật lí; cần ôn kỹ đặc điểm cấu tạo DNA, RNA và cách xác định đời con của phép lai phân tích." },
+            { stt: 21, hsId: 70, name: "Nguyễn Thanh Mẩn", dob: "21/10/2012", className: "9A2", examCode: "Đề 4", pages: "93–96", tnCorrect: 12, tnScore: 3.0, c1: 1.25, c2: 1.0, c3: 0.0, c4: 0.75, tlScore: 3.0, total: 6.0, rounded: 6.0, note: "Trên bài ghi: Nguyễn Thanh Mẫn (Khoanh 10D, 20C nhưng bảng ghi 10A, 20A)", comment: "Câu 1 (1,25/1,5đ): a) Lấy đúng ví dụ viên gạch thả từ trên cao xuống (0,25đ), thiếu nêu định nghĩa; b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (0,0/1,5đ): a) Bỏ trống; b) Áp dụng sai công thức (ghi 4 + 4² = 20, công thức đúng là 4.2² = 16). | Câu 4 (0,75/1,0đ): Viết đúng P: Aa x aa (0,25đ), GP: A,a ; a (0,25đ), F1: 1Aa, 1aa (0,25đ); thiếu kết luận tỉ lệ kiểu gene (chỉ ghi tỉ lệ kiểu hình). => Lưu ý điền bảng đáp án trắc nghiệm khớp với câu khoanh (câu 10, 20); ôn lại công thức nhân đôi DNA." },
+            { stt: 22, hsId: 71, name: "Trần Khải Minh", dob: "08/05/2012", className: "9A2", examCode: "Đề 3", pages: "37–40", tnCorrect: 15, tnScore: 3.75, c1: 1.25, c2: 1.0, c3: 1.5, c4: 0.25, tlScore: 4.0, total: 7.75, rounded: 7.8, note: "", comment: "Câu 1 (1,25/1,5đ): a) Nêu đúng khi vật ở độ cao so với mặt đất (0,25đ), ví dụ chưa nêu rõ vật chuyển động (0đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Giải thích đúng bản chất 2 nguyên tắc bổ sung và bán bảo toàn (0,75đ); b) Tính đúng 4.2² = 16 DNA con (0,75đ). | Câu 4 (0,25/1,0đ): Viết đúng P: Aa x aa (0,25đ); viết thiếu giao tử a của cơ thể Aa và giải sai F1 (ghi 100% Aa rồi lai F1 x F1). => Làm tốt các câu tự luận Vật lí và câu 3 Sinh học; cần lưu ý cơ thể dị hợp Aa giảm phân cho 2 loại giao tử A và a." },
+            { stt: 23, hsId: 72, name: "Nguyễn Hiếu Nghĩa", dob: "09/10/2012", className: "9A2", examCode: "Đề 4", pages: "89–92", tnCorrect: 11, tnScore: 2.75, c1: 1.5, c2: 1.0, c3: 0.0, c4: 0.25, tlScore: 2.75, total: 5.5, rounded: 5.5, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng điều kiện vật ở độ cao so với mặt đất và ví dụ quả dừa rụng xuống (0,5đ); b) Đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng A = 1000 J (0,5đ) và P = 100 W (0,5đ, lưu ý lời giải câu b cần ghi là 'công suất' thay vì 'công cơ học'). | Câu 3 (0,0/1,5đ): a) Chưa nêu đúng nguyên tắc bổ sung và bán bảo toàn (0đ); b) Tính sai 2.2⁴ = 32 (đề cho 4 phân tử nhân đôi 2 lần: 4.2² = 16) (0đ). | Câu 4 (0,25/1,0đ): Viết đúng P: Aa x aa (0,25đ); thiếu giao tử và xác định sai F1, F2. => Phần tự luận Vật lí làm tốt; cần ôn tập lại phần Sinh học (nguyên tắc tái bản DNA, công thức nhân đôi và lai phân tích)." },
+            { stt: 24, hsId: 73, name: "Đoàn Nguyễn Bảo Ngọc", dob: "25/09/2012", className: "9A2", examCode: "Đề 1", pages: "21–24", tnCorrect: 19, tnScore: 4.75, c1: 1.5, c2: 1.0, c3: 1.5, c4: 0.75, tlScore: 4.75, total: 9.5, rounded: 9.5, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng khi vật chuyển động và ví dụ ném bóng lên cao rơi xuống (0,5đ); b) Tính đúng Wt = 100 J, W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu đúng 2 đặc điểm phân biệt DNA và RNA (đơn phân và số mạch) (0,75đ); b) Tính đúng 2.2³ = 16 DNA con (0,75đ). | Câu 4 (0,75/1,0đ): Viết đúng P: Aa x aa (0,25đ), GP: A,a ; a (0,25đ), F1: Aa, aa (0,25đ); thiếu dòng kết luận tỉ lệ kiểu gene 1Aa : 1aa. => Bài làm rất tốt (9,5/10đ)! Chỉ cần lưu ý ghi đầy đủ kết luận tỉ lệ kiểu gene ở câu 4." },
+            { stt: 25, hsId: 74, name: "Trần Phú Nhuận", dob: "10/05/2012", className: "9A2", examCode: "Đề 2", pages: "49–52", tnCorrect: 17, tnScore: 4.25, c1: 1.0, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 4.5, total: 8.75, rounded: 8.8, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nêu nhầm sang định nghĩa cơ năng và lấy ví dụ các vật nằm yên (không có động năng) (0đ); b) Đúng Wt = 100 J, W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu đúng 2 đặc điểm phân biệt DNA (2 mạch, A-T-G-C) và RNA (1 mạch, A-U-G-C) (0,75đ); b) Đúng 2.2³ = 16 DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích và xác định đúng F1: 1Aa : 1aa (1,0đ). => Bài làm tốt (8,75/10đ); cần phân biệt rõ động năng (năng lượng do chuyển động) với thế năng và cơ năng ở câu 1a." },
+            { stt: 26, hsId: 75, name: "Nguyễn Thị Huỳnh Như", dob: "27/06/2012", className: "9A2", examCode: "Đề 2", pages: "121–124", tnCorrect: 16, tnScore: 4.0, c1: 1.0, c2: 1.0, c3: 1.0, c4: 0.75, tlScore: 3.75, total: 7.75, rounded: 7.8, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nêu nhầm sang định nghĩa cơ năng và ví dụ vật nằm yên (0đ); b) Tính đúng Wt = 100 J và W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,0/1,5đ): a) Mới nêu được đơn phân của RNA là A, U, G, C (0,25đ), thiếu cấu tạo của DNA và số mạch; b) Tính đúng 2x2³ = 16 DNA con (0,75đ). | Câu 4 (0,75/1,0đ): Viết đúng P: Aa x aa (0,25đ), giao tử A,a ; a (0,25đ) và F1: Aa, aa (0,25đ); thiếu kết luận tỉ lệ kiểu gene của F1 (lại viết thêm F1 x F1). => Bài làm khá tốt (7,75/10đ); cần nắm vững hơn định nghĩa động năng ở câu 1a và trình bày gọn sơ đồ lai phân tích ở câu 4." },
+            { stt: 27, hsId: 76, name: "Nguyễn Ngọc Thái", dob: "19/08/2012", className: "9A2", examCode: "Đề 1", pages: "109–112", tnCorrect: 15, tnScore: 3.75, c1: 1.0, c2: 1.0, c3: 1.15, c4: 0.5, tlScore: 3.65, total: 7.4, rounded: 7.4, note: "", comment: "Câu 1 (1,0/1,5đ): a) Chưa nêu được khi nào vật có động năng, ví dụ vật nằm yên là sai (0đ); b) Tính đúng Wt = 100 J và W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,15/1,5đ): a) Nêu đúng khác biệt đơn phân T và U (0,4đ), thiếu ý DNA 2 mạch, RNA 1 mạch; b) Tính đúng 2.2³ = 16 DNA con (0,75đ). | Câu 4 (0,5/1,0đ): Viết đúng P: Aa x aa (0,25đ) và GP: A,a ; a (0,25đ); sai kết quả đời con Fa (ghi nhầm 100% Aa rồi lai tiếp F2). => Nắm được công thức tính thế năng, cơ năng, công và công suất; cần xem lại phép lai phân tích." },
+            { stt: 28, hsId: 77, name: "Nguyễn Ngọc Như Thảo", dob: "01/10/2012", className: "9A2", examCode: "Đề 1", pages: "1–4", tnCorrect: 19, tnScore: 4.75, c1: 1.5, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 5.0, total: 9.75, rounded: 9.8, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng khi vật chuyển động và lấy ví dụ đúng quả dừa đang rơi (0,5đ); b) Tính đúng Wt = 100 J, W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu đầy đủ 2 đặc điểm phân biệt DNA và RNA (số mạch và các loại nucleotide) (0,75đ); b) Đúng 2.2³ = 16 DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích và xác định đúng tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Bài làm xuất sắc, nắm rất vững kiến thức lý thuyết và bài tập của cả Vật lí và Sinh học!" },
+            { stt: 29, hsId: 78, name: "Cao Gia Thịnh", dob: "19/05/2012", className: "9A2", examCode: "Đề 1", pages: "45–48", tnCorrect: 20, tnScore: 5.0, c1: 1.5, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 5.0, total: 10.0, rounded: 10.0, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng định nghĩa động năng và lấy ví dụ đúng máy bay đang bay (0,5đ); b) Tính đúng Wt = 100 J và W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Lập bảng phân biệt rất rõ số mạch và đơn phân của DNA, RNA (0,75đ); b) Tính đúng 2.2³ = 16 DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích P: Aa x aa, giao tử và tỉ lệ 1Aa : 1aa (1,0đ). => Bài làm xuất sắc, đạt điểm tuyệt đối 10/10 ở cả phần Trắc nghiệm và Tự luận! Đáng khen ngợi!" },
+            { stt: 30, hsId: 79, name: "Ngô Thị Anh Thư", dob: "16/07/2012", className: "9A2", examCode: "Đề 1", pages: "97–100", tnCorrect: 14, tnScore: 3.5, c1: 0.5, c2: 1.0, c3: 0.0, c4: 0.0, tlScore: 1.5, total: 5.0, rounded: 5.0, note: "", comment: "Câu 1 (0,5/1,5đ): a) Đúng ý khi vật chuyển động (0,25đ), ví dụ thiếu thế năng; b) Đúng công thức Wt = P.h (0,25đ) nhưng chép nhầm số liệu chậu cây Đề 3/4. | Câu 2 (1,0/1,0đ): Tính đúng A = 600 (0,5đ, lưu ý ký hiệu lực kéo là F và ghi đơn vị J) và công suất P = 60 W (0,5đ). | Câu 3 (0,0/1,5đ): Bỏ trống không làm bài. | Câu 4 (0,0/1,0đ): Không làm bài. => Cần đọc đúng đề của mình (Đề 1 là quả dừa P=20N, h=5m chứ không phải chậu cây) và ôn tập kỹ phần Sinh học." },
+            { stt: 31, hsId: 80, name: "Nguyễn Ngọc Minh Thư", dob: "30/04/2012", className: "9A2", examCode: "Đề 3", pages: "137–140", tnCorrect: 15, tnScore: 3.75, c1: 1.0, c2: 1.0, c3: 0.4, c4: 1.0, tlScore: 3.4, total: 7.15, rounded: 7.2, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nêu chưa đúng định nghĩa thế năng trọng trường và thiếu ví dụ (0đ); b) Tính đúng Wt = 120 J và W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (0,4/1,5đ): a) Nêu và giải thích đúng nguyên tắc bổ sung (0,4đ), thiếu nguyên tắc bán bảo toàn; b) Bỏ trống không làm câu 3b (0đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích P: Aa x aa, giao tử và tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Làm tốt phần bài tập Vật lí và câu 4 Sinh học; cần bổ sung nguyên tắc bán bảo toàn và công thức tính số DNA con ở câu 3." },
+            { stt: 32, hsId: 81, name: "Lê Hiếu Thương", dob: "27/06/2012", className: "9A2", examCode: "Đề 1", pages: "29–32", tnCorrect: 17, tnScore: 4.25, c1: 0.5, c2: 1.0, c3: 1.15, c4: 0.25, tlScore: 2.9, total: 7.15, rounded: 7.2, note: "", comment: "Câu 1 (0,5/1,5đ): a) Không làm (0đ); b) Tính đúng Wt = 100 J (0,5đ), tính sai cơ năng W = Wt . Wđ = 100 . 0 = 0 J (công thức đúng là W = Wt + Wđ = 100 J). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,15/1,5đ): a) Nêu đúng sự khác nhau về đơn phân A-T-G-C và A-U-G-C (0,4đ), thiếu ý số mạch (2 mạch và 1 mạch); b) Đúng 2x2³ = 16 (0,75đ). | Câu 4 (0,25/1,0đ): Viết đúng P: Aa x aa (0,25đ); thiếu giao tử GP và xác định sai F1 (ghi 100% Aa rồi lai F1 x F1). => Lưu ý cơ năng bằng tổng thế năng và động năng (W = Wt + Wđ chứ không phải nhân), và ôn lại phép lai phân tích." },
+            { stt: 33, hsId: 82, name: "Huỳnh Phan Khánh Thy", dob: "26/06/2012", className: "9A2", examCode: "Đề 2", pages: "157–160", tnCorrect: 12, tnScore: 3.0, c1: 0.25, c2: 1.0, c3: 0.75, c4: 1.0, tlScore: 3.0, total: 6.0, rounded: 6.0, note: "", comment: "Câu 1 (0,25/1,5đ): a) Không làm (0đ); b) Sai công thức thế năng Wt = P.h.m = 200 J, có viết công thức W = Wt + Wđ (0,25đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 (J) (0,5đ, chú ý ghi đơn vị) và công suất P = 60 W (0,5đ). | Câu 3 (0,75/1,5đ): a) Bỏ trống (0đ); b) Tính đúng a.2^k = 2.2³ = 16 DNA con (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai, giao tử, F1: 1Aa : 1aa và tỉ lệ kiểu gene (1,0đ). => Cần nhớ đúng công thức thế năng trọng trường Wt = P.h = m.g.h (không nhân cả P và m) và ôn kỹ cấu tạo DNA/RNA." },
+            { stt: 34, hsId: 83, name: "Lê Mỹ Tiên", dob: "10/11/2012", className: "9A2", examCode: "Đề 3", pages: "13–16", tnCorrect: 10, tnScore: 2.5, c1: 1.25, c2: 1.0, c3: 1.5, c4: 0.75, tlScore: 4.5, total: 7.0, rounded: 7.0, note: "", comment: "Câu 1 (1,25/1,5đ): a) Nêu đúng điều kiện vật ở độ cao nhất định so với mặt đất (0,25đ), ví dụ quả bóng trên nóc tủ thiếu động năng (0đ); b) Đúng Wt=120J, W=120J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 (W) (0,5đ, chú ý ghi đơn vị W). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bán bảo toàn và bổ sung (0,75đ); b) Tính đúng 4.2² = 16 phân tử DNA con (0,75đ). | Câu 4 (0,75/1,0đ): Dòng P ghi nhầm AA x aa nhưng dòng giao tử ghi đúng A,a và xác định được tỉ lệ 1Aa : 1aa (0,75đ). => Phần tự luận làm tốt (4,5/5,0đ); cần chú ý lấy ví dụ vật vừa ở trên cao vừa đang chuyển động ở câu 1a và kiểm tra kỹ kiểu gene P." },
+            { stt: 35, hsId: 84, name: "Nguyễn Thị Kim Tiền", dob: "12/11/2012", className: "9A2", examCode: "Đề 4", pages: "69–72", tnCorrect: 12, tnScore: 3.0, c1: 0.0, c2: 1.0, c3: 0.0, c4: 0.0, tlScore: 1.0, total: 4.0, rounded: 4.0, note: "", comment: "Câu 1 (0,0/1,5đ): a) Không làm (0đ); b) Sai công thức và thay số sai (ghi m.g.h = 3.30.40 = 360 J), thiếu tính cơ năng (0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (0,0/1,5đ): Không làm bài. | Câu 4 (0,0/1,0đ): Không làm bài. => Chỉ mới làm đúng câu 2 tự luận; cần ôn lại công thức thế năng Wt = P.h = 30.4 = 120 J và kiến thức tự luận Sinh học." },
+            { stt: 36, hsId: 85, name: "Lương An Trà", dob: "20/01/2012", className: "9A2", examCode: "Đề 3", pages: "41–44", tnCorrect: 17, tnScore: 4.25, c1: 1.5, c2: 1.0, c3: 1.5, c4: 0.5, tlScore: 4.5, total: 8.75, rounded: 8.8, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng điều kiện vật có thế năng trọng trường và ví dụ trái banh ném lên không trung (0,5đ); b) Đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bán bảo toàn và bổ sung (0,75đ); b) Tính đúng 4.2² = 16 phân tử DNA con (0,75đ). | Câu 4 (0,5/1,0đ): Viết đúng P: Aa x aa (0,25đ) và GP: A,a x a (0,25đ); sai kết quả F1 (ghi nhầm 100% Aa rồi lai tiếp F1 x F1). => Bài làm tốt, trình bày rõ ràng; chỉ cần lưu ý kết quả phép lai phân tích P: Aa x aa cho ngay Fa: 1Aa : 1aa." },
+            { stt: 37, hsId: 86, name: "Lê Thị Bảo Trân", dob: "30/05/2012", className: "9A2", examCode: "Đề 3", pages: "53–56", tnCorrect: 14, tnScore: 3.5, c1: 1.25, c2: 1.0, c3: 1.5, c4: 1.0, tlScore: 4.75, total: 8.25, rounded: 8.3, note: "", comment: "Câu 1 (1,25/1,5đ): a) Định nghĩa chưa chính xác (0đ), lấy ví dụ đúng máy bay đang bay trên bầu trời (0,25đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu đúng nguyên tắc bán bảo toàn và bổ sung (0,75đ, lưu ý ghi bổ sung chữ T chỗ 'A liên kết với T'); b) Đúng 4.2² = 16 (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích P: Aa x aa và tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Phần tự luận làm tốt (4,75/5,0đ); cần kiểm tra kỹ bài trước khi nộp để không sót chữ và ôn thêm trắc nghiệm." },
+            { stt: 38, hsId: 87, name: "Trần Ngọc Trân", dob: "23/11/2012", className: "9A2", examCode: "Đề 2", pages: "169–172", tnCorrect: 7, tnScore: 1.75, c1: 1.0, c2: 1.0, c3: 0.75, c4: 1.0, tlScore: 3.75, total: 5.5, rounded: 5.5, note: "", comment: "Câu 1 (1,0/1,5đ): a) Thiếu định nghĩa động năng, ví dụ chưa thể hiện thế năng trọng trường (0đ); b) Tính đúng Wt = 100 J và W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (0,75/1,5đ): Chưa nêu được đặc điểm phân biệt DNA và RNA (0đ); tính đúng số DNA con 2.2³ = 16 (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai P: Aa x aa, giao tử và tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Phần tự luận làm khá (3,75/5,0đ), nhưng phần trắc nghiệm sai nhiều (7/20 câu). Cần nắm chắc lý thuyết cơ bản hơn." },
+            { stt: 39, hsId: 88, name: "Nguyễn Thị Thanh Tú", dob: "28/01/2012", className: "9A2", examCode: "Đề 4", pages: "177–180", tnCorrect: 14, tnScore: 3.5, c1: 1.25, c2: 1.0, c3: 1.5, c4: 0.75, tlScore: 4.5, total: 8.0, rounded: 8.0, note: "", comment: "Câu 1 (1,25/1,5đ): a) Lấy được ví dụ quạt trần đang quay vừa có thế năng vừa có động năng (0,25đ), định nghĩa chưa đúng (0đ); b) Đúng Wt=120J, W=120J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bán bảo toàn và bổ sung (0,75đ); b) Tính đúng 4.2² = 16 phân tử DNA con (0,75đ). | Câu 4 (0,75/1,0đ): Viết đúng P: Aa x aa (0,25đ), GP: A,a ; a (0,25đ), tỉ lệ 1:1 (0,25đ); dòng kết quả F1 ghi thiếu thành '1A : a' thay vì '1Aa : 1aa'. => Bài làm tốt (8,0/10đ); cần chú ý ghi đầy đủ kiểu gene đời con 1Aa : 1aa ở câu 4." },
+            { stt: 40, hsId: 89, name: "Trần Gia Tường", dob: "17/01/2012", className: "9A2", examCode: "Đề 2", pages: "73–76", tnCorrect: 19, tnScore: 4.75, c1: 1.5, c2: 1.0, c3: 1.15, c4: 1.0, tlScore: 4.65, total: 9.4, rounded: 9.4, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu đúng khi vật di chuyển và ví dụ máy bay đang bay (0,5đ); b) Tính đúng Wt = 100 J và W = 100 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 600 J (0,5đ) và công suất P = 60 W (0,5đ). | Câu 3 (1,15/1,5đ): a) Nêu đúng các loại đơn phân nucleotide của DNA và RNA (0,4đ), thiếu ý số mạch (2 mạch và 1 mạch); b) Đúng 2.2³ = 16 (0,75đ). | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai phân tích và xác định đúng tỉ lệ kiểu gene 1Aa : 1aa (1,0đ). => Bài làm rất tốt, nắm chắc kiến thức; ở câu 3a cần nêu thêm số mạch của DNA (2 mạch) và RNA (1 mạch)." },
+            { stt: 41, hsId: 90, name: "Nguyễn Trương Phúc Vinh", dob: "11/03/2012", className: "9A2", examCode: "Đề 4", pages: "117–120", tnCorrect: 16, tnScore: 4.0, c1: 0.75, c2: 1.0, c3: 1.5, c4: 0.25, tlScore: 3.5, total: 7.5, rounded: 7.5, note: "", comment: "Câu 1 (0,75/1,5đ): a) Lấy đúng ví dụ quả dừa từ trên cây rơi xuống (0,25đ), thiếu nêu khi nào vật có thế năng; b) Tính đúng Wt = 120 J (0,5đ), thiếu tính cơ năng W. | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (1,5/1,5đ): a) Nêu và giải thích đúng 2 nguyên tắc bổ sung và bán bảo toàn (0,75đ); b) Tính đúng 4.2² = 16 DNA con (0,75đ). | Câu 4 (0,25/1,0đ): Viết đúng P: Aa x aa (0,25đ); viết thiếu giao tử a của cơ thể Aa và xác định sai F1 (ghi 100% Aa rồi lai tiếp F2). => Nắm vững bài tập tính công, công suất và tái bản DNA; cần làm đủ ý cơ năng ở câu 1b và xem lại phép lai phân tích." },
+            { stt: 42, hsId: 91, name: "Trương Thành Vinh", dob: "27/04/2011", className: "9A2", examCode: "Đề 4", pages: "65–68", tnCorrect: 11, tnScore: 2.75, c1: 1.0, c2: 0.25, c3: 0.0, c4: 0.0, tlScore: 1.25, total: 4.0, rounded: 4.0, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nhầm sang định nghĩa động năng, ví dụ xe chạy trên đường thiếu thế năng (0đ); b) Tính đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (0,25/1,0đ): Viết đúng công thức A = F.s và P = A/t (0,25đ), nhưng thay nhầm số liệu của Đề 1/2 (F=100, s=6) vào bài Đề 4 (F=200, s=5). | Câu 3 (0,0/1,5đ): Không làm bài. | Câu 4 (0,0/1,0đ): Không làm bài. => Cần tự lực làm bài theo đúng số liệu Đề 4 của mình và ôn tập kỹ kiến thức cả hai phân môn." },
+            { stt: 43, hsId: 92, name: "Nguyễn Hoàng Lan Vy", dob: "31/07/2012", className: "9A2", examCode: "Đề 4", pages: "161–164", tnCorrect: 11, tnScore: 2.75, c1: 1.5, c2: 0.0, c3: 0.0, c4: 0.0, tlScore: 1.5, total: 4.25, rounded: 4.3, note: "", comment: "Câu 1 (1,5/1,5đ): a) Nêu rất đầy đủ điều kiện có thế năng trọng trường và giải thích ví dụ máy bay đang bay (0,5đ); b) Đúng Wt = 120 J, W = 120 J (1,0đ). | Câu 2 (0,0/1,0đ): Mới viết câu dẫn, chưa viết công thức và chưa tính công A, công suất P. | Câu 3 (0,0/1,5đ): Bỏ trống không làm câu 3. | Câu 4 (0,0/1,0đ): Viết sai kiểu gene của P (ghi AA x aa thay vì cá thể dị hợp Aa x aa theo đề bài). => Câu 1 làm rất tốt nhưng chưa kịp làm câu 2, câu 3 và viết sai đề câu 4. Cần rèn kỹ năng làm bài và phân bổ thời gian." },
+            { stt: 44, hsId: 93, name: "Nguyễn Thị Tường Vy", dob: "24/02/2012", className: "9A2", examCode: "Đề 3", pages: "133–136", tnCorrect: 9, tnScore: 2.25, c1: 1.0, c2: 1.0, c3: 0.25, c4: 1.0, tlScore: 3.25, total: 5.5, rounded: 5.5, note: "", comment: "Câu 1 (1,0/1,5đ): a) Không làm (0đ); b) Tính đúng Wt = 120 J và W = 120 J (1,0đ). | Câu 2 (1,0/1,0đ): Tính đúng công A = 1000 J (0,5đ) và công suất P = 100 W (0,5đ). | Câu 3 (0,25/1,5đ): a) Nhầm sang câu hỏi phân biệt DNA/RNA của Đề 1/2 (0đ); b) Đúng công thức n.2^k (0,25đ) nhưng thay số 2.2³ của Đề 1/2 thay vì 4.2². | Câu 4 (1,0/1,0đ): Viết đúng sơ đồ lai P: Aa x aa, giao tử và kết quả F1: 1Aa : 1aa (1,0đ). => Làm tốt phần tính toán Vật lí và câu 4 Sinh học; cần đọc kỹ câu hỏi của Đề 3 ở câu 3 và ôn thêm phần trắc nghiệm." },
+            { stt: 45, hsId: 94, name: "Hồ Như Ý", dob: "08/03/2012", className: "9A2", examCode: "Đề 4", pages: "145–148", tnCorrect: 14, tnScore: 3.5, c1: 1.0, c2: 0.0, c3: 0.25, c4: 0.0, tlScore: 1.25, total: 4.75, rounded: 4.8, note: "", comment: "Câu 1 (1,0/1,5đ): a) Nêu đúng điều kiện có thế năng trọng trường và giải thích ví dụ máy bay đang bay rất rõ (0,5đ); b) Đúng Wt = 120 J (0,5đ), thiếu tính W. | Câu 2 (0,0/1,0đ): Bỏ trống không làm câu 2. | Câu 3 (0,25/1,5đ): a) Mới nêu được tên 2 nguyên tắc (Bổ sung, Bán bảo toàn) (0,25đ), chưa giải thích nội dung; b) Bỏ trống (0đ). | Câu 4 (0,0/1,0đ): Viết sai kiểu gene của P (ghi AA x aa thay vì phép lai phân tích cá thể dị hợp Aa x aa theo đề bài). => Hiểu rất rõ câu 1a nhưng bỏ sót nhiều câu (câu 1b ý W, câu 2, câu 3b) và đọc nhầm đề câu 4. Cần phân bổ thời gian hợp lý hơn." },
+            { stt: 46, hsId: 95, name: "Võ Thị Ngọc Yến", dob: "25/04/2012", className: "9A2", examCode: "Đề 2", pages: "101–104", tnCorrect: 11, tnScore: 2.75, c1: 0.5, c2: 0.5, c3: 0.25, c4: 0.25, tlScore: 1.5, total: 4.25, rounded: 4.3, note: "Bài làm quên ghi họ tên và lớp trên tờ đề (đối chiếu danh sách lớp 9A2)", comment: "Câu 1 (0,5/1,5đ): a) Nêu đúng khi vật di chuyển và lấy ví dụ đúng quăng đá lên cao rơi xuống (0,5đ); b) Không làm câu 1b (0đ). | Câu 2 (0,5/1,0đ): a) Tính đúng A = F.s = 100.6 = 600 J (0,5đ); b) Tính sai công suất P (nhân 6000.10 = 10000 W thay vì lấy A/t = 600/10 = 60 W) (0đ). | Câu 3 (0,25/1,5đ): a) Có ý phân biệt DNA xoắn và RNA 1 mạch nhưng diễn đạt chưa chuẩn, thiếu đơn phân (0,25đ); b) Tính sai 2³.3 = 18 (0đ). | Câu 4 (0,25/1,0đ): Có viết phép lai Aa x aa (0,25đ) nhưng trình bày sai thứ tự F1, F2 và sai tỉ lệ đời con. => Nhớ ghi đầy đủ Họ tên và Lớp vào bài thi! Cần ôn lại công thức công suất P = A/t, nhân đôi DNA và sơ đồ lai." }
+        ];
+
+        // 2. DỮ LIỆU 49 HỌC SINH LỚP 9A1 (TỪ HỒ SƠ KHỐI 9)
+        const students9A1 = [
+            { stt: 1, hsId: 1, name: "Đoàn Nguyễn Thúy An", dob: "24/06/2012", className: "9A1", hasScore: false },
+            { stt: 2, hsId: 2, name: "Giàu Nguyễn Nhựt Anh", dob: "10/05/2012", className: "9A1", hasScore: false },
+            { stt: 3, hsId: 3, name: "Lê Thị Kim Anh", dob: "09/07/2011", className: "9A1", hasScore: false },
+            { stt: 4, hsId: 4, name: "Nguyễn Quốc Anh", dob: "04/07/2012", className: "9A1", hasScore: false },
+            { stt: 5, hsId: 5, name: "Nguyễn Hùng Dương", dob: "02/04/2012", className: "9A1", hasScore: false },
+            { stt: 6, hsId: 6, name: "Nguyễn Thị Thùy Dương", dob: "21/06/2012", className: "9A1", hasScore: false },
+            { stt: 7, hsId: 7, name: "Nguyễn Văn Đông", dob: "04/05/2012", className: "9A1", hasScore: false },
+            { stt: 8, hsId: 8, name: "Huỳnh Ngọc Hân", dob: "30/03/2012", className: "9A1", hasScore: false },
+            { stt: 9, hsId: 9, name: "Trương Mỹ Hoa", dob: "15/06/2012", className: "9A1", hasScore: false },
+            { stt: 10, hsId: 10, name: "Nguyễn Mỹ Huyền", dob: "04/05/2012", className: "9A1", hasScore: false },
+            { stt: 11, hsId: 11, name: "Nguyễn Hoàng Kha", dob: "20/09/2012", className: "9A1", hasScore: false },
+            { stt: 12, hsId: 12, name: "Huỳnh Minh Khang", dob: "25/02/2012", className: "9A1", hasScore: false },
+            { stt: 13, hsId: 13, name: "Lê Thị Bích Khuê", dob: "02/06/2012", className: "9A1", hasScore: false },
+            { stt: 14, hsId: 14, name: "Lê Minh Kim", dob: "03/01/2012", className: "9A1", hasScore: false },
+            { stt: 15, hsId: 15, name: "Nguyễn Huyền Lam", dob: "21/10/2012", className: "9A1", hasScore: false },
+            { stt: 16, hsId: 16, name: "Nguyễn Tường Lam", dob: "10/04/2012", className: "9A1", hasScore: false },
+            { stt: 17, hsId: 17, name: "Ngô Thị Thùy Linh", dob: "16/08/2012", className: "9A1", hasScore: false },
+            { stt: 18, hsId: 18, name: "Trà Nguyễn Như Muội", dob: "09/07/2012", className: "9A1", hasScore: false },
+            { stt: 19, hsId: 19, name: "Hứa Thảo My", dob: "03/08/2012", className: "9A1", hasScore: false },
+            { stt: 20, hsId: 20, name: "Lưu Thị Bảo Ngọc", dob: "07/11/2012", className: "9A1", hasScore: false },
+            { stt: 21, hsId: 21, name: "Nguyễn Lê Bảo Ngọc", dob: "22/09/2012", className: "9A1", hasScore: false },
+            { stt: 22, hsId: 22, name: "Đỗ Dương Thảo Nguyên", dob: "13/04/2012", className: "9A1", hasScore: false },
+            { stt: 23, hsId: 23, name: "Nguyễn Thiện Nhân", dob: "11/10/2012", className: "9A1", hasScore: false },
+            { stt: 24, hsId: 24, name: "Hồ Đào Minh Nhật", dob: "19/09/2012", className: "9A1", hasScore: false },
+            { stt: 25, hsId: 25, name: "Đoàn Thị Ngọc Như", dob: "23/11/2011", className: "9A1", hasScore: false },
+            { stt: 26, hsId: 26, name: "Nguyễn Thị Huỳnh Như", dob: "21/02/2012", className: "9A1", hasScore: false },
+            { stt: 27, hsId: 27, name: "Võ Thành Phát", dob: "11/09/2012", className: "9A1", hasScore: false },
+            { stt: 28, hsId: 28, name: "Nguyễn Gia Phú", dob: "08/01/2012", className: "9A1", hasScore: false },
+            { stt: 29, hsId: 29, name: "Nguyễn Trọng Phúc", dob: "07/04/2011", className: "9A1", hasScore: false },
+            { stt: 30, hsId: 30, name: "Đinh Thị Mỹ Phụng", dob: "13/10/2012", className: "9A1", hasScore: false },
+            { stt: 31, hsId: 31, name: "Nguyễn Thư Quỳnh", dob: "24/05/2012", className: "9A1", hasScore: false },
+            { stt: 32, hsId: 32, name: "Phan Nguyễn Như Quỳnh", dob: "13/06/2012", className: "9A1", hasScore: false },
+            { stt: 33, hsId: 33, name: "Nguyễn Văn Thanh Sang", dob: "15/01/2012", className: "9A1", hasScore: false },
+            { stt: 34, hsId: 34, name: "Lê Vũ Thiên Thảo", dob: "06/04/2012", className: "9A1", hasScore: false },
+            { stt: 35, hsId: 35, name: "Nguyễn Minh Thiên", dob: "03/04/2012", className: "9A1", hasScore: false },
+            { stt: 36, hsId: 36, name: "Lê Ngọc Thư", dob: "15/07/2012", className: "9A1", hasScore: false },
+            { stt: 37, hsId: 37, name: "Lê Kiều Tiên", dob: "26/08/2012", className: "9A1", hasScore: false },
+            { stt: 38, hsId: 38, name: "Trần Minh Toàn", dob: "24/04/2011", className: "9A1", hasScore: false },
+            { stt: 39, hsId: 39, name: "Văn Thanh Toàn", dob: "26/08/2012", className: "9A1", hasScore: false },
+            { stt: 40, hsId: 40, name: "Nguyễn Thị Ngọc Trâm", dob: "18/02/2012", className: "9A1", hasScore: false },
+            { stt: 41, hsId: 41, name: "Nguyễn Thị Bảo Trân", dob: "24/09/2012", className: "9A1", hasScore: false },
+            { stt: 42, hsId: 42, name: "Phạm Nguyễn Bảo Trân", dob: "18/09/2012", className: "9A1", hasScore: false },
+            { stt: 43, hsId: 43, name: "Trần Thị Bảo Trân", dob: "15/12/2012", className: "9A1", hasScore: false },
+            { stt: 44, hsId: 44, name: "Đàm Việt Trinh", dob: "14/09/2011", className: "9A1", hasScore: false },
+            { stt: 45, hsId: 45, name: "Nguyễn Đức Trung", dob: "15/10/2012", className: "9A1", hasScore: false },
+            { stt: 46, hsId: 46, name: "Võ Nguyên Văn", dob: "29/09/2012", className: "9A1", hasScore: false },
+            { stt: 47, hsId: 47, name: "Trần Quốc Vinh", dob: "16/05/2012", className: "9A1", hasScore: false },
+            { stt: 48, hsId: 48, name: "Lê Tường Vy", dob: "20/01/2012", className: "9A1", hasScore: false },
+            { stt: 49, hsId: 49, name: "Nguyễn Thảo Như Ý", dob: "26/01/2012", className: "9A1", hasScore: false }
+        ];
+
+        // Gắn cờ hasScore: true cho toàn bộ học sinh 9A2
+        students9A2.forEach(s => s.hasScore = true);
+
+        const allStudents = [...students9A2, ...students9A1];
+        let currentClassFilter = '9A2';
+
+        // Hàm bỏ dấu tiếng Việt để tìm kiếm nhanh không phân biệt hoa thường/dấu
+        function removeVietnameseTones(str) {
+            return str.normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        // Chuyển đổi tab lớp (9A2 / 9A1 / ALL)
+        function setClassFilter(classCode) {
+            currentClassFilter = classCode;
+            const tabs = {
+                '9A2': { el: document.getElementById('tab-class-9A2'), sub: 'Đã có điểm' },
+                '9A1': { el: document.getElementById('tab-class-9A1'), sub: 'Chờ cập nhật' },
+                'ALL': { el: document.getElementById('tab-class-ALL'), sub: '95 học sinh' }
+            };
+
+            Object.keys(tabs).forEach(k => {
+                const btn = tabs[k].el;
+                if (k === classCode) {
+                    btn.className = "py-2.5 px-3 rounded-2xl font-bold text-xs sm:text-sm border-2 transition-all bg-indigo-600 text-white border-indigo-600 shadow-sm";
+                } else {
+                    btn.className = "py-2.5 px-3 rounded-2xl font-bold text-xs sm:text-sm border-2 transition-all bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100";
+                }
+            });
+
+            filterStudentDropdown();
+        }
+
+        // Render danh sách học sinh vào thẻ <select>
+        function filterStudentDropdown() {
+            const searchInput = document.getElementById('quick-search-input');
+            const clearBtn = document.getElementById('clear-search-btn');
+            const query = removeVietnameseTones(searchInput.value.trim());
+
+            if (searchInput.value.trim().length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            let list = allStudents;
+            if (currentClassFilter === '9A2') list = students9A2;
+            else if (currentClassFilter === '9A1') list = students9A1;
+
+            if (query) {
+                list = list.filter(s => {
+                    const normName = removeVietnameseTones(s.name);
+                    return normName.includes(query) || String(s.stt).includes(query) || String(s.hsId).includes(query);
+                });
+            }
+
+            const selectEl = document.getElementById('student-select');
+            const countBadge = document.getElementById('student-count-badge');
+            countBadge.innerText = `${list.length} học sinh`;
+
+            selectEl.innerHTML = '';
+
+            if (list.length === 0) {
+                const emptyOpt = document.createElement('option');
+                emptyOpt.value = "";
+                emptyOpt.textContent = "-- Không tìm thấy học sinh phù hợp --";
+                selectEl.appendChild(emptyOpt);
+                onStudentSelected();
+                return;
+            }
+
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = "";
+            defaultOpt.textContent = `-- Bấm vào đây để chọn tên học sinh (${list.length} HS) --`;
+            selectEl.appendChild(defaultOpt);
+
+            list.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.hsId;
+                const statusLabel = s.className === '9A2' ? '' : ' (Chờ cập nhật điểm)';
+                opt.textContent = `[${s.className} - STT ${String(s.stt).padStart(2, '0')}] ${s.name}${statusLabel}`;
+                selectEl.appendChild(opt);
+            });
+
+            // Nếu người dùng gõ tìm kiếm mà chỉ còn đúng 1 học sinh thì tự động chọn luôn
+            if (query && list.length === 1) {
+                selectEl.value = list[0].hsId;
+            }
+
+            onStudentSelected();
+        }
+
+        function clearSearchFilter() {
+            document.getElementById('quick-search-input').value = '';
+            filterStudentDropdown();
+        }
+
+        // Xử lý khi học sinh chọn tên mình trong danh sách -> Hiển thị gợi ý nhập mật khẩu
+        function onStudentSelected() {
+            const selectEl = document.getElementById('student-select');
+            const hintBox = document.getElementById('dynamic-student-hint');
+            const hintContent = document.getElementById('hint-text-content');
+            const moreHintBtn = document.getElementById('more-hint-btn');
+            const errorBox = document.getElementById('login-error-box');
+            errorBox.classList.add('hidden');
+
+            const selectedHsId = parseInt(selectEl.value);
+            if (!selectedHsId) {
+                hintBox.classList.add('hidden');
+                return;
+            }
+
+            const student = allStudents.find(s => s.hsId === selectedHsId);
+            if (!student) {
+                hintBox.classList.add('hidden');
+                return;
+            }
+
+            const [dd, mm, yyyy] = student.dob.split('/');
+            hintBox.classList.remove('hidden');
+            moreHintBtn.classList.remove('hidden');
+            hintContent.innerHTML = `🎯 <strong>Gợi ý cho ${student.name}:</strong> Sinh tháng <strong>${mm}</strong> năm <strong>${yyyy}</strong> — Em hãy nhập dạng <code class="font-black text-indigo-700">**/${mm}/${yyyy}</code> hoặc <code class="font-black text-indigo-700">**${mm}${yyyy}</code>`;
+        }
+
+        // Nút xem thêm gợi ý ngày sinh (nếu học sinh quên ngày sinh trong hồ sơ)
+        function revealDayHint() {
+            const selectEl = document.getElementById('student-select');
+            const selectedHsId = parseInt(selectEl.value);
+            const student = allStudents.find(s => s.hsId === selectedHsId);
+            if (!student) return;
+
+            const [dd, mm, yyyy] = student.dob.split('/');
+            const hintContent = document.getElementById('hint-text-content');
+            const moreHintBtn = document.getElementById('more-hint-btn');
+
+            hintContent.innerHTML = `🎯 <strong>Gợi ý hồ sơ của ${student.name}:</strong> Ngày <strong>${dd}</strong> tháng <strong>${mm}</strong> năm <strong>${yyyy}</strong> (Nhập: <code class="font-black text-emerald-700">${student.dob}</code> hoặc <code class="font-black text-emerald-700">${dd}${mm}${yyyy}</code>)`;
+            moreHintBtn.classList.add('hidden');
+        }
+
+        // Bật / tắt hiển thị mật khẩu
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('dob-password');
+            const pwdText = document.getElementById('toggle-pwd-text');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                pwdText.innerText = 'Ẩn';
+            } else {
+                pwdInput.type = 'password';
+                pwdText.innerText = 'Hiện';
+            }
+        }
+
+        // Chuẩn hóa chuỗi ngày tháng năm sinh để học sinh nhập kiểu nào cũng nhận diện đúng
+        function normalizeDOBInput(rawInput) {
+            const clean = rawInput.trim();
+            // Trường hợp học sinh nhập có dấu phân cách /, -, .
+            const parts = clean.split(/[\/\-\.\s]+/);
+            if (parts.length === 3) {
+                const d = parts[0].padStart(2, '0');
+                const m = parts[1].padStart(2, '0');
+                let y = parts[2];
+                if (y.length === 2) y = '20' + y;
+                return `${d}${m}${y}`;
+            }
+            // Trường hợp học sinh nhập liền các chữ số (VD: 16082012)
+            const digitsOnly = clean.replace(/\D/g, '');
+            return digitsOnly;
+        }
+
+        // Xử lý đăng nhập tra cứu
+        function handleLogin(e) {
+            e.preventDefault();
+            const selectEl = document.getElementById('student-select');
+            const pwdInput = document.getElementById('dob-password');
+            const errorBox = document.getElementById('login-error-box');
+            const errorMsg = document.getElementById('login-error-message');
+
+            const selectedHsId = parseInt(selectEl.value);
+            if (!selectedHsId) {
+                errorMsg.innerHTML = `Vui lòng bấm chọn <strong>Tên học sinh</strong> trong danh sách trước khi tra cứu!`;
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            const student = allStudents.find(s => s.hsId === selectedHsId);
+            if (!student) return;
+
+            const expectedDigits = student.dob.replace(/\D/g, ''); // DDMMYYYY
+            const userDigits = normalizeDOBInput(pwdInput.value);
+
+            if (userDigits !== expectedDigits) {
+                const [dd, mm, yyyy] = student.dob.split('/');
+                errorMsg.innerHTML = `Mật khẩu ngày sinh chưa chính xác! <br><span class="text-xs font-normal">Gợi ý: Ngày sinh trong hồ sơ của <strong>${student.name}</strong> thuộc tháng <strong>${mm}/${yyyy}</strong>. Hãy nhập đúng 8 chữ số Ngày/Tháng/Năm sinh (VD: ${dd}/${mm}/${yyyy}).</span>`;
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            // Đăng nhập thành công
+            errorBox.classList.add('hidden');
+            renderStudentResult(student);
+        }
+
+        // Định dạng số điểm kiểu Việt Nam (dấu phẩy)
+        function fmtScore(num, decimals = 2) {
+            if (num === null || num === undefined) return '--';
+            return Number(num).toFixed(decimals).replace(/\.?0+$/, (m) => m.includes('.') ? '' : m).replace('.', ',');
+        }
+
+        function fmtFixed(num, decimals = 2) {
+            return Number(num).toFixed(decimals).replace('.', ',');
+        }
+
+        // Xếp loại mức độ bài kiểm tra
+        function getPerformanceBadge(score) {
+            if (score >= 9.0) return { label: "Xuất sắc", bg: "bg-emerald-500 text-white", light: "bg-emerald-50 text-emerald-800 border-emerald-200" };
+            if (score >= 8.0) return { label: "Giỏi", bg: "bg-blue-600 text-white", light: "bg-blue-50 text-blue-800 border-blue-200" };
+            if (score >= 6.5) return { label: "Khá", bg: "bg-indigo-600 text-white", light: "bg-indigo-50 text-indigo-800 border-indigo-200" };
+            if (score >= 5.0) return { label: "Đạt", bg: "bg-amber-500 text-white", light: "bg-amber-50 text-amber-800 border-amber-200" };
+            return { label: "Cần cố gắng", bg: "bg-rose-600 text-white", light: "bg-rose-50 text-rose-800 border-rose-200" };
+        }
+
+        // Hiển thị phiếu điểm chi tiết của học sinh
+        function renderStudentResult(student) {
+            document.getElementById('login-section').classList.add('hidden');
+            const resultSection = document.getElementById('result-section');
+            const container = document.getElementById('score-card-container');
+            resultSection.classList.remove('hidden');
+
+            // Nếu là học sinh lớp 9A1 (đang chờ cập nhật điểm)
+            if (!student.hasScore) {
+                container.innerHTML = `
+                    <div class="bg-gradient-to-r from-slate-800 to-indigo-900 p-6 sm:p-8 text-white">
+                        <span class="px-3 py-1 rounded-full bg-white/15 text-xs font-bold uppercase tracking-wider">Hồ sơ học sinh Khối 9</span>
+                        <h2 class="text-2xl sm:text-3xl font-black mt-2">${student.name}</h2>
+                        <p class="text-indigo-200 text-sm mt-1">Lớp: <strong>${student.className}</strong> • Ngày sinh: <strong>${student.dob}</strong> • STT Lớp: <strong>${student.stt}</strong></p>
+                    </div>
+                    <div class="p-8 text-center space-y-4">
+                        <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Điểm Lớp 9A1 đang được cập nhật</h3>
+                        <p class="text-slate-600 max-w-md mx-auto text-sm leading-relaxed">
+                            Hiện tại hệ thống đã công bố bảng điểm và nhận xét chi tiết của <strong>Lớp 9A2 (46 học sinh)</strong>. Điểm bài kiểm tra giữa kì I của lớp 9A1 sẽ được giáo viên cập nhật trong thời gian tới.
+                        </p>
+                    </div>
+                `;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            // Xử lý tách nhận xét chi tiết từng câu và lời khuyên chung
+            const [rawDetails, generalAdvice] = student.comment.split('=>').map(s => s ? s.trim() : '');
+            const questionComments = rawDetails ? rawDetails.split('|').map(s => s.trim()).filter(Boolean) : [];
+
+            const badge = getPerformanceBadge(student.total);
+            const tnPercent = Math.round((student.tnScore / 5.0) * 100);
+            const tlPercent = Math.round((student.tlScore / 5.0) * 100);
+
+            // Tạo danh sách thẻ nhận xét từng câu tự luận
+            const questionDetailsHtml = questionComments.map((item, idx) => {
+                const isPhysics = idx < 2;
+                const subjectTag = isPhysics
+                    ? `<span class="px-2.5 py-0.5 rounded-lg bg-blue-100 text-blue-800 text-xs font-extrabold">Phân môn Vật lí</span>`
+                    : `<span class="px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-extrabold">Phân môn Sinh học</span>`;
+
+                return `
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Chi tiết Câu ${idx + 1} Tự luận</span>
+                            ${subjectTag}
+                        </div>
+                        <p class="text-sm sm:text-base font-medium text-slate-800 leading-relaxed">${item}</p>
+                    </div>
+                `;
+            }).join('');
+
+            // Lưu ý đặc biệt trên bài thi (nếu có)
+            const specialNoteHtml = student.note ? `
+                <div class="mx-6 sm:mx-8 mt-6 p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 text-sm font-semibold flex items-start space-x-2.5">
+                    <span class="text-lg leading-none">📌</span>
+                    <div><strong>Ghi chú trên bài thi:</strong> ${student.note}</div>
+                </div>
+            ` : '';
+
+            container.innerHTML = `
+                <!-- HEADER PHIẾU ĐIỂM CÁ NHÂN -->
+                <div class="bg-gradient-to-r from-indigo-800 via-indigo-700 to-blue-700 p-6 sm:p-8 text-white">
+                    <div class="flex flex-wrap items-start justify-between gap-4">
+                        <div class="space-y-2">
+                            <div class="inline-flex items-center space-x-2">
+                                <span class="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-extrabold uppercase tracking-wider">
+                                    PHIẾU KẾT QUẢ KIỂM TRA GIỮA KÌ I
+                                </span>
+                                <span class="px-3 py-1 rounded-full ${badge.bg} text-xs font-black uppercase shadow-sm">
+                                    ${badge.label}
+                                </span>
+                            </div>
+                            <h2 class="text-2xl sm:text-4xl font-black tracking-tight">${student.name}</h2>
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-indigo-100 font-medium">
+                                <span>🏫 Lớp: <strong class="text-white">${student.className}</strong></span>
+                                <span>•</span>
+                                <span>🎂 Ngày sinh: <strong class="text-white">${student.dob}</strong></span>
+                                <span>•</span>
+                                <span>🔢 STT Lớp: <strong class="text-white">${String(student.stt).padStart(2, '0')}</strong> (Mã HS: ${student.hsId})</span>
+                            </div>
+                        </div>
+
+                        <!-- Mã đề & Trang bài làm -->
+                        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-3 text-right">
+                            <span class="block text-xs text-indigo-200 font-semibold uppercase">Mã đề kiểm tra</span>
+                            <span class="text-xl sm:text-2xl font-black text-amber-300">${student.examCode}</span>
+                            <span class="block text-[11px] text-indigo-100 mt-0.5">Phách/Trang: ${student.pages}</span>
+                        </div>
+                    </div>
+                </div>
+
+                ${specialNoteHtml}
+
+                <!-- TỔNG QUAN 3 KHỐI ĐIỂM CHÍNH -->
+                <div class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 border-b border-slate-200">
+                    
+                    <!-- Khối 1: TỔNG ĐIỂM -->
+                    <div class="p-6 rounded-3xl bg-gradient-to-br from-indigo-50 via-white to-blue-50 border-2 border-indigo-200 flex flex-col justify-between shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-700">TỔNG ĐIỂM BÀI THI</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${badge.light}">${badge.label}</span>
+                        </div>
+                        <div class="my-4 flex items-baseline space-x-2">
+                            <span class="text-5xl sm:text-6xl font-black text-indigo-700 tracking-tight">${fmtScore(student.total)}</span>
+                            <span class="text-lg font-bold text-slate-400">/ 10đ</span>
+                        </div>
+                        <div class="pt-3 border-t border-indigo-100 flex items-center justify-between text-xs sm:text-sm">
+                            <span class="font-semibold text-slate-600">Điểm làm tròn (0,1):</span>
+                            <span class="font-black text-base text-slate-900 bg-white px-3 py-1 rounded-xl border border-indigo-200">${fmtFixed(student.rounded, 1)} điểm</span>
+                        </div>
+                    </div>
+
+                    <!-- Khối 2: ĐIỂM TRẮC NGHIỆM -->
+                    <div class="p-6 rounded-3xl bg-slate-50 border-2 border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-600">I. TRẮC NGHIỆM KHÁCH QUAN</span>
+                                <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-lg">0,25đ / câu</span>
+                            </div>
+                            <div class="mt-3 flex items-baseline justify-between">
+                                <div>
+                                    <span class="text-3xl sm:text-4xl font-black text-slate-900">${fmtScore(student.tnScore)}</span>
+                                    <span class="text-sm font-bold text-slate-400">/ 5,0 điểm</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-lg font-extrabold text-emerald-600">${student.tnCorrect}/20</span>
+                                    <span class="block text-[11px] font-semibold text-slate-500">câu đúng</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-1.5">
+                            <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-indigo-600 rounded-full transition-all duration-500" style="width: ${tnPercent}%"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 font-medium text-right">Đạt ${tnPercent}% điểm Trắc nghiệm</p>
+                        </div>
+                    </div>
+
+                    <!-- Khối 3: ĐIỂM TỰ LUẬN -->
+                    <div class="p-6 rounded-3xl bg-slate-50 border-2 border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-600">II. PHẦN TỰ LUẬN (4 CÂU)</span>
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg">Vật lí & Sinh học</span>
+                            </div>
+                            <div class="mt-3 flex items-baseline justify-between">
+                                <div>
+                                    <span class="text-3xl sm:text-4xl font-black text-slate-900">${fmtScore(student.tlScore)}</span>
+                                    <span class="text-sm font-bold text-slate-400">/ 5,0 điểm</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-bold text-slate-700">4 câu hỏi</span>
+                                    <span class="block text-[11px] font-semibold text-slate-500">2 Lý + 2 Sinh</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-1.5">
+                            <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-600 rounded-full transition-all duration-500" style="width: ${tlPercent}%"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 font-medium text-right">Đạt ${tlPercent}% điểm Tự luận</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BẢNG ĐIỂM CHI TIẾT TỪNG CÂU TỰ LUẬN -->
+                <div class="p-6 sm:p-8 border-b border-slate-200 space-y-4">
+                    <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center space-x-2">
+                        <span>📊 BẢNG ĐIỂM CHI TIẾT TỪNG CÂU TỰ LUẬN (5,0 ĐIỂM)</span>
+                    </h3>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                        <!-- Câu 1 -->
+                        <div class="p-4 rounded-2xl border-2 ${student.c1 >= 1.25 ? 'bg-emerald-50/60 border-emerald-200' : student.c1 > 0 ? 'bg-amber-50/50 border-amber-200' : 'bg-rose-50/50 border-rose-200'}">
+                            <span class="text-xs font-extrabold uppercase text-blue-700 block">Câu 1 (Vật lí)</span>
+                            <span class="text-xs text-slate-600 font-medium block mt-0.5">Động năng, Thế năng, Cơ năng</span>
+                            <div class="mt-3 flex items-baseline space-x-1">
+                                <span class="text-2xl font-black text-slate-900">${fmtScore(student.c1)}</span>
+                                <span class="text-xs font-bold text-slate-500">/ 1,5 điểm</span>
+                            </div>
+                        </div>
+
+                        <!-- Câu 2 -->
+                        <div class="p-4 rounded-2xl border-2 ${student.c2 >= 0.75 ? 'bg-emerald-50/60 border-emerald-200' : student.c2 > 0 ? 'bg-amber-50/50 border-amber-200' : 'bg-rose-50/50 border-rose-200'}">
+                            <span class="text-xs font-extrabold uppercase text-blue-700 block">Câu 2 (Vật lí)</span>
+                            <span class="text-xs text-slate-600 font-medium block mt-0.5">Công cơ học & Công suất</span>
+                            <div class="mt-3 flex items-baseline space-x-1">
+                                <span class="text-2xl font-black text-slate-900">${fmtScore(student.c2)}</span>
+                                <span class="text-xs font-bold text-slate-500">/ 1,0 điểm</span>
+                            </div>
+                        </div>
+
+                        <!-- Câu 3 -->
+                        <div class="p-4 rounded-2xl border-2 ${student.c3 >= 1.15 ? 'bg-emerald-50/60 border-emerald-200' : student.c3 > 0 ? 'bg-amber-50/50 border-amber-200' : 'bg-rose-50/50 border-rose-200'}">
+                            <span class="text-xs font-extrabold uppercase text-emerald-700 block">Câu 3 (Sinh học)</span>
+                            <span class="text-xs text-slate-600 font-medium block mt-0.5">DNA, RNA & Nhân đôi DNA</span>
+                            <div class="mt-3 flex items-baseline space-x-1">
+                                <span class="text-2xl font-black text-slate-900">${fmtScore(student.c3)}</span>
+                                <span class="text-xs font-bold text-slate-500">/ 1,5 điểm</span>
+                            </div>
+                        </div>
+
+                        <!-- Câu 4 -->
+                        <div class="p-4 rounded-2xl border-2 ${student.c4 >= 0.75 ? 'bg-emerald-50/60 border-emerald-200' : student.c4 > 0 ? 'bg-amber-50/50 border-amber-200' : 'bg-rose-50/50 border-rose-200'}">
+                            <span class="text-xs font-extrabold uppercase text-emerald-700 block">Câu 4 (Sinh học)</span>
+                            <span class="text-xs text-slate-600 font-medium block mt-0.5">Sơ đồ phép lai phân tích</span>
+                            <div class="mt-3 flex items-baseline space-x-1">
+                                <span class="text-2xl font-black text-slate-900">${fmtScore(student.c4)}</span>
+                                <span class="text-xs font-bold text-slate-500">/ 1,0 điểm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NHẬN XÉT CHI TIẾT CỦA GIÁO VIÊN -->
+                <div class="p-6 sm:p-8 border-b border-slate-200 space-y-5">
+                    <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center space-x-2">
+                        <span>📝 NHẬN XÉT CHI TIẾT TỪNG CÂU & HƯỚNG DẪN SỬA BÀI</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        ${questionDetailsHtml}
+                    </div>
+
+                    ${generalAdvice ? `
+                        <div class="p-5 rounded-2xl bg-gradient-to-r from-indigo-50 to-emerald-50 border-2 border-indigo-200 flex items-start space-x-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 font-black text-lg shadow-sm">
+                                💡
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-xs font-extrabold uppercase tracking-wider text-indigo-800">ĐÁNH GIÁ CHUNG & LỜI KHUYÊN CỦA GIÁO VIÊN:</p>
+                                <p class="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">${generalAdvice}</p>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <!-- THỐNG KÊ SO SÁNH VỚI LỚP 9A2 -->
+                <div class="p-6 sm:p-8 bg-slate-50/70">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-3">
+                        📈 THỐNG KÊ CHUNG LỚP 9A2 (46 HỌC SINH DỰ THI)
+                    </h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-slate-500 font-semibold block">Điểm TB Lớp 9A2</span>
+                            <span class="text-lg font-black text-indigo-700">6,69 điểm</span>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-slate-500 font-semibold block">TB Trắc nghiệm / Tự luận</span>
+                            <span class="text-sm font-black text-slate-800">3,62đ / 3,07đ</span>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-slate-500 font-semibold block">Điểm cao nhất lớp</span>
+                            <span class="text-lg font-black text-emerald-600">10,0 điểm</span>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-slate-500 font-semibold block">Điểm đạt (>= 5,0đ)</span>
+                            <span class="text-lg font-black text-blue-600">33 / 46 HS (71,7%)</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Bắn pháo hoa chúc mừng nếu học sinh đạt từ 8.0 trở lên
+            if (student.total >= 8.0) {
+                confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Quay lại màn hình tra cứu học sinh khác
+        function logoutStudent() {
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('dob-password').value = '';
+            document.getElementById('login-error-box').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Khởi tạo danh sách khi mở trang
+        window.onload = function() {
+            filterStudentDropdown();
+        };
+    </script>
+</body>
+</html>
